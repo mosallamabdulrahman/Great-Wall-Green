@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 48" fill="none">
+  <!-- Halal Official-Style Circle Seal -->
+  <g transform="translate(46, 0)">
+    <circle cx="24" cy="24" r="22" stroke="#008852" stroke-width="2" fill="#ffffff"/>
+    <circle cx="24" cy="24" r="18.5" stroke="#008852" stroke-width="0.8" stroke-dasharray="2 1.5"/>
+    <!-- Arabic Halal Calligraphy -->
+    <text x="24" y="27" font-family="'Noto Sans Arabic', 'Traditional Arabic', sans-serif" font-weight="900" font-size="13" fill="#008852" text-anchor="middle" direction="rtl">حلال</text>
+    <!-- Top and bottom arch text -->
+    <path id="halal-arc-top" d="M 8,24 A 16,16 0 0,1 40,24" fill="none"/>
+    <text font-size="3.8" font-family="'Noto Sans', sans-serif" font-weight="700" fill="#008852" letter-spacing="1">
+      <textPath href="#halal-arc-top" startOffset="50%" text-anchor="middle">HALAL CERTIFIED</textPath>
+    </text>
+    <path id="halal-arc-bot" d="M 40,25 A 16,16 0 0,1 8,25" fill="none"/>
+    <text font-size="3.5" font-family="'Noto Sans', sans-serif" font-weight="700" fill="#008852" letter-spacing="0.8">
+      <textPath href="#halal-arc-bot" startOffset="50%" text-anchor="middle">ISLAMIC FOOD</textPath>
+    </text>
+  </g>
+</svg>

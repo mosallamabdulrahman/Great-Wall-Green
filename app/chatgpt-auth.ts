@@ -1,0 +1,2 @@
+// ChatGPT authentication removed
+export {};
