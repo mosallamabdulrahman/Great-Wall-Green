@@ -1,4 +1,5 @@
 {
+  "homepage": "https://mosallamabdulrahman.github.io/Great-Wall-Green",
   "name": "site-creator-vinext-starter",
   "version": "0.1.0",
   "private": true,
@@ -11,7 +12,9 @@
     "build": "node scripts/run-framework.mjs build",
     "start": "node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json --local --persist-to .wrangler/state --ip 127.0.0.1 --inspector-port 0",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "predeploy": "npm run build && python scripts/prepare-gh-pages.py",
+    "deploy": "gh-pages -d dist/client -t --nojekyll"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
@@ -51,6 +54,7 @@
     "drizzle-kit": "0.31.10",
     "eslint": "9.39.4",
     "eslint-config-next": "16.3.4",
+    "gh-pages": "^6.3.0",
     "json-rpc-2.0": "1.7.1",
     "raw-body": "3.0.2",
     "react-server-dom-webpack": "19.2.6",
