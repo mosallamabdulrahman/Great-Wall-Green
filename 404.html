@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+    var path = window.location.pathname;
+    var base = '/Great-Wall-Green/';
+    if (!path.startsWith(base)) {
+      window.location.replace(base + 'en/');
+    } else {
+      var segs = path.slice(base.length).split('/');
+      var lang = segs[0] || 'en';
+      var sub = segs[1] || '';
+      if (sub) {
+        window.location.replace(base + lang + '/' + sub + '.html' + window.location.search);
+      } else {
+        window.location.replace(base + lang + '.html' + window.location.search);
+      }
+    }
+  </script>
+  <title>Great Wall Green Source</title>
+</head>
+<body>
+  <p>Redirecting...</p>
+</body>
+</html>
