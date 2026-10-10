@@ -70,14 +70,7 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
       />
     );
   } else if (route === "about") {
-    mainContent = (
-      <AboutView
-        lang={lang}
-        c={c}
-        href={href}
-        rfq={rfq}
-      />
-    );
+    mainContent = <AboutView lang={lang} c={c} href={href} rfq={rfq} />;
   } else if (route === "products") {
     mainContent = (
       <ProductsView
@@ -99,14 +92,7 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
       />
     );
   } else if (route === "oem") {
-    mainContent = (
-      <OemView
-        c={c}
-        lang={lang}
-        href={href}
-        rfq={rfq}
-      />
-    );
+    mainContent = <OemView c={c} lang={lang} href={href} rfq={rfq} />;
   } else if (route === "manufacturing") {
     mainContent = (
       <ManufacturingView
@@ -128,22 +114,9 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
       />
     );
   } else if (route === "insights") {
-    mainContent = (
-      <InsightsView
-        c={c}
-        href={href}
-        rfq={rfq}
-      />
-    );
+    mainContent = <InsightsView c={c} href={href} rfq={rfq} />;
   } else if (route === "contact") {
-    mainContent = (
-      <ContactView
-        lang={lang}
-        c={c}
-        pn={pn}
-        href={href}
-      />
-    );
+    mainContent = <ContactView lang={lang} c={c} pn={pn} href={href} />;
   } else {
     mainContent = (
       <div className="container section">
@@ -185,16 +158,14 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
         {c.overview}
       </a>
 
-      {showScrollTop && (
-        <button
-          type="button"
-          className="scroll-to-top-btn"
-          onClick={scrollToTop}
-          aria-label={lang === "ar" ? "الصعود للأعلى" : "Scroll to top"}
-        >
-          <ArrowUp size={20} />
-        </button>
-      )}
+      <button
+        type="button"
+        className={`scroll-to-top-btn ${showScrollTop ? "show" : ""}`}
+        onClick={scrollToTop}
+        aria-label={lang === "ar" ? "الصعود للأعلى" : "Scroll to top"}
+      >
+        <ArrowUp size={20} />
+      </button>
 
       <Modals
         dialog={dialog}

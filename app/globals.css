@@ -1874,7 +1874,7 @@ summary::-webkit-details-marker {
 }
 .scroll-to-top-btn {
   position: fixed;
-  bottom: 92px;
+  bottom: 40px;
   inset-inline-end: 24px;
   width: 46px;
   height: 46px;
@@ -1888,8 +1888,19 @@ summary::-webkit-details-marker {
   cursor: pointer;
   z-index: 45;
   box-shadow: 0 4px 16px rgba(18, 59, 42, 0.25);
-  transition: all 0.25s ease;
   padding: 0;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    background 0.25s ease;
+}
+.scroll-to-top-btn.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 .scroll-to-top-btn:hover {
   background: var(--brand-gold);
