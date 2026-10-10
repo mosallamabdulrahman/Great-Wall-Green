@@ -10,9 +10,9 @@
     } else {
       var segs = path.slice(base.length).split('/');
       var lang = segs[0] || 'en';
-      var sub = segs[1] || '';
-      if (sub) {
-        window.location.replace(base + lang + '/' + sub + '.html' + window.location.search);
+      var rest = segs.slice(1).join('/');
+      if (rest) {
+        window.location.replace(base + lang + '/' + rest + '.html' + window.location.search);
       } else {
         window.location.replace(base + lang + '.html' + window.location.search);
       }
