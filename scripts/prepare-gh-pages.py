@@ -48,9 +48,9 @@ spa_404 = f"""<!DOCTYPE html>
     }} else {{
       var segs = path.slice(base.length).split('/');
       var lang = segs[0] || 'en';
-      var sub = segs[1] || '';
-      if (sub) {{
-        window.location.replace(base + lang + '/' + sub + '.html' + window.location.search);
+      var rest = segs.slice(1).join('/');
+      if (rest) {{
+        window.location.replace(base + lang + '/' + rest + '.html' + window.location.search);
       }} else {{
         window.location.replace(base + lang + '.html' + window.location.search);
       }}
@@ -114,6 +114,11 @@ for root, _, files in os.walk(DIST_DIR):
                 pattern_assign = f'`/${{e.target.value}}/${{route}}'
                 if pattern_assign in content:
                     content = content.replace(pattern_assign, f'`{prefix}/${{e.target.value}}/${{route}}')
+                    modified = True
+
+                pattern_assign2 = f'`/${{newLang}}/${{route}}'
+                if pattern_assign2 in content:
+                    content = content.replace(pattern_assign2, f'`{prefix}/${{newLang}}/${{route}}')
                     modified = True
 
             if modified:

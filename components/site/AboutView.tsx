@@ -8,6 +8,7 @@ import {
   Calendar,
   CheckCircle2,
   ArrowRight,
+  Boxes,
 } from "lucide-react";
 import { type Lang } from "../../content";
 import { SiteImage } from "./Image";
@@ -93,27 +94,23 @@ export function AboutView({
       <section className="section about-content-section">
         <div className="container">
           {activeTab === "profile" && (
-            <div className="about-profile-grid">
+            <div key="profile" className="about-tab-panel-animated about-profile-grid">
               <div className="about-profile-text">
-                <h2>
+                <h2 className="about-company-headline">
                   {lang === "ar"
-                    ? "تأسست شركة Hebei Changcheng Luyuan Food Co., Ltd. في عام 2001 وتقع في منطقة الإنتاج الأساسية لكستناء يانشان، خبي، الصين."
-                    : "Hebei Changcheng Luyuan Food Co., Ltd. was established in 2001 and is located in the core production area of Yanshan chestnuts, Hebei, China."}
+                    ? "شركة Hebei Changcheng Luyuan Food Co., Ltd."
+                    : "Hebei Changcheng Luyuan Food Co., Ltd."}
                 </h2>
-                <p>
+                <h3 className="about-company-subhead">
+                  {lang === "ar"
+                    ? "تأسست في عام 2001 وتقع في منطقة الإنتاج الأساسية لكستناء يانشان، خبي، الصين."
+                    : "was established in 2001 and is located in the core production area of Yanshan chestnuts, Hebei, China."}
+                </h3>
+                <p className="about-company-desc">
                   {lang === "ar"
                     ? "تتخصص الشركة في زراعة الكستناء وتوريدها ومعالجتها وتخزينها والتصنيع العميق للكستناء والمنتجات الزراعية. من خلال مرافق الإنتاج الحديثة وسعة التخزين الكبيرة وخطوط الإنتاج الآلية، نقدم جودة موثوقة وإنتاجًا مرنًا وحلول سلسلة توريد متكاملة لشركائنا حول العالم."
                     : "The company specializes in the cultivation, sourcing, processing, storage, and deep processing of chestnuts and agricultural products. With modern production facilities, large storage capacity, and automated production lines, we provide reliable quality, flexible production, and integrated supply chain solutions."}
                 </p>
-                <div className="about-profile-actions">
-                  <a className="btn" href={rfq("", "Bulk Supply")}>
-                    {c.quote}
-                    <ArrowRight size={16} className="btn-arrow-icon" />
-                  </a>
-                  <a className="btn btn-outline" href={href("products")}>
-                    {c.explore}
-                  </a>
-                </div>
               </div>
               <div className="about-profile-photo-wrapper">
                 <SiteImage
@@ -328,40 +325,58 @@ export function AboutView({
           <div className="about-stats-showcase-grid">
             <div className="about-stat-item">
               <div className="about-stat-icon-circle">
-                <Leaf size={28} />
+                <Leaf size={36} strokeWidth={2.2} />
               </div>
-              <span className="about-stat-title">
-                {lang === "ar" ? "20+ عاماً\nمن الخبرة" : "20+ Years\nof Experience"}
-              </span>
+              <div className="about-stat-text-block">
+                <span className="about-stat-number">
+                  {lang === "ar" ? "20+ عاماً" : "20+ Years"}
+                </span>
+                <span className="about-stat-label">
+                  {lang === "ar" ? "من الخبرة" : "of Experience"}
+                </span>
+              </div>
             </div>
 
             <div className="about-stat-item">
               <div className="about-stat-icon-circle">
-                <Factory size={28} />
+                <Boxes size={36} strokeWidth={2.2} />
               </div>
-              <span className="about-stat-title">
-                {lang === "ar" ? "سلسلة إمداد\nمتكاملة" : "Integrated\nSupply Chain"}
-              </span>
+              <div className="about-stat-text-block">
+                <span className="about-stat-number">
+                  {lang === "ar" ? "سلسلة إمداد" : "Integrated"}
+                </span>
+                <span className="about-stat-label">
+                  {lang === "ar" ? "متكاملة" : "Supply Chain"}
+                </span>
+              </div>
             </div>
 
             <div className="about-stat-item">
               <div className="about-stat-icon-circle">
-                <Globe2 size={28} />
+                <Globe2 size={36} strokeWidth={2.2} />
               </div>
-              <span className="about-stat-title">
-                {lang === "ar" ? "تصدير إلى\nأكثر من 50 دولة" : "Exporting to\n50+ Countries"}
-              </span>
+              <div className="about-stat-text-block">
+                <span className="about-stat-number">
+                  {lang === "ar" ? "تصدير إلى" : "Exporting to"}
+                </span>
+                <span className="about-stat-label">
+                  {lang === "ar" ? "أكثر من 50 دولة" : "50+ Countries"}
+                </span>
+              </div>
             </div>
 
             <div className="about-stat-item">
               <div className="about-stat-icon-circle">
-                <Package size={28} />
+                <Factory size={36} strokeWidth={2.2} />
               </div>
-              <span className="about-stat-title">
-                {lang === "ar"
-                  ? "تصنيع للغير\nوعلامة خاصة"
-                  : "OEM & Private Label\nManufacturing"}
-              </span>
+              <div className="about-stat-text-block">
+                <span className="about-stat-number">
+                  {lang === "ar" ? "تصنيع للغير وعلامة خاصة" : "OEM & Private Label"}
+                </span>
+                <span className="about-stat-label">
+                  {lang === "ar" ? "بمعايير عالمية" : "Manufacturing"}
+                </span>
+              </div>
             </div>
           </div>
         </div>

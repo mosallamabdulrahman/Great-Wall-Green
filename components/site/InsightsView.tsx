@@ -125,23 +125,28 @@ export function InsightsView({
           <div className="inline-guides">
             {articles.map((item, i) => (
               <article id={item.id} key={item.id} className="guide-full-article">
-                <span className="eyebrow">
-                  0{i + 1} / {c.insights}
-                </span>
-                <h2>{item.title}</h2>
-                <p className="intro">
-                  {i === 1
-                    ? c.harvestIntro
-                    : i === 2
-                      ? c.packIntro
-                      : c.guideIntro}
-                </p>
-                {c.guideSections.split("|").map((heading, j) => (
-                  <section key={heading}>
-                    <h3>{heading}</h3>
-                    <p>{c.guideBodies.split("|")[j]}</p>
-                  </section>
-                ))}
+                <div className="guide-article-header">
+                  <span className="eyebrow guide-badge">
+                    0{i + 1} / {c.insights}
+                  </span>
+                  <h2>{item.title}</h2>
+                  <p className="intro">
+                    {i === 1
+                      ? c.harvestIntro
+                      : i === 2
+                        ? c.packIntro
+                        : c.guideIntro}
+                  </p>
+                </div>
+                <div className="guide-sections-grid">
+                  {c.guideSections.split("|").map((heading, j) => (
+                    <div key={heading} className="guide-section-card">
+                      <span className="guide-sec-num">0{j + 1}</span>
+                      <h3>{heading}</h3>
+                      <p>{c.guideBodies.split("|")[j]}</p>
+                    </div>
+                  ))}
+                </div>
               </article>
             ))}
           </div>

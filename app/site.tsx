@@ -6,6 +6,7 @@ import { Footer } from "../components/site/Footer";
 import { HomeView } from "../components/site/HomeView";
 import { AboutView } from "../components/site/AboutView";
 import { ProductsView } from "../components/site/ProductsView";
+import { ProductDetailView } from "../components/site/ProductDetailView";
 import { OemView } from "../components/site/OemView";
 import { ManufacturingView } from "../components/site/ManufacturingView";
 import { QualityView } from "../components/site/QualityView";
@@ -61,6 +62,16 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
         c={c}
         href={href}
         setDialog={setDialog}
+        rfq={rfq}
+      />
+    );
+  } else if (path[0] === "products" && path[1]) {
+    mainContent = (
+      <ProductDetailView
+        lang={lang}
+        c={c}
+        productId={path[1]}
+        href={href}
         rfq={rfq}
       />
     );

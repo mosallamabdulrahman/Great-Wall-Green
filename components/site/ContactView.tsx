@@ -29,13 +29,15 @@ export function ContactView({
           priority
         />
         <div className="quote-hero-overlay" />
-        <div className="container quote-hero-content">
-          <h1>{lang === "ar" ? "طلب عرض سعر" : "Request a Quote"}</h1>
-          <p>
-            {lang === "ar"
-              ? "أخبرنا بمتطلباتك. سيرد فريق التصدير لدينا خلال 24 ساعة."
-              : "Tell us your requirements. Our export team will respond within 24 hours."}
-          </p>
+        <div className="container">
+          <div className="quote-hero-content">
+            <h1>{lang === "ar" ? "طلب عرض سعر" : "Request a Quote"}</h1>
+            <p>
+              {lang === "ar"
+                ? "أخبرنا بمتطلباتك. سيرد فريق التصدير لدينا خلال 24 ساعة."
+                : "Tell us your requirements. Our export team will respond within 24 hours."}
+            </p>
+          </div>
         </div>
       </section>
 

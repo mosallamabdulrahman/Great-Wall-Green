@@ -381,11 +381,8 @@ export function Modals({
               .map(({ name, i }) => (
                 <a
                   key={name}
-                  href={href("products") + "#" + productIds[i]}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDialog("product:" + i);
-                  }}
+                  href={href("products/" + productIds[i])}
+                  onClick={() => setDialog("")}
                 >
                   <SiteImage name={productImages[i]} alt="" />
                   <span>{name}</span>

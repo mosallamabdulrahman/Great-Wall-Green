@@ -266,29 +266,22 @@ export function ProductsView({
 
             <div className="products-3col-grid">
               {filteredProducts.map((p, index) => (
-                <div
+                <a
                   key={`${p.id}-${index}`}
+                  href={href("products/" + p.id)}
                   className="product-grid-card"
-                  onClick={() => setDialog("product:" + p.modalIndex)}
                 >
                   <div className="product-grid-card-image">
                     <SiteImage name={p.image} alt={p.name} />
                   </div>
                   <div className="product-grid-card-body">
                     <h3>{p.name}</h3>
-                    <button
-                      type="button"
-                      className="product-view-link"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDialog("product:" + p.modalIndex);
-                      }}
-                    >
+                    <span className="product-view-link">
                       {c.viewProduct}
                       <ArrowRight size={15} className="btn-arrow-icon" />
-                    </button>
+                    </span>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </main>

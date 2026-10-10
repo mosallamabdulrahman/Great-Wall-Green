@@ -216,11 +216,7 @@ export function HomeView({
               return (
                 <a
                   key={i}
-                  href={href("products") + "#" + productIds[i]}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setDialog("product:" + i);
-                  }}
+                  href={href("products/" + productIds[i])}
                   className={`home-clean-card ${isFirst ? "home-clean-card-primary" : ""}`}
                   aria-label={pn[i]}
                 >
@@ -238,7 +234,7 @@ export function HomeView({
           <div className="other-strip">
             <span className="eyebrow">{c.other}</span>
             {[7, 8, 9].map((i) => (
-              <a key={i} href={href("products") + "#" + productIds[i]}>
+              <a key={i} href={href("products/" + productIds[i])}>
                 <SiteImage name={productImages[i]} alt="" />
                 <strong>{pn[i]}</strong>
               </a>
@@ -247,7 +243,7 @@ export function HomeView({
 
           <a
             className="frozen-link text-link"
-            href={href("products") + "#" + productIds[4]}
+            href={href("products/" + productIds[4])}
           >
             {pn[4]}
           </a>

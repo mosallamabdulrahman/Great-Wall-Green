@@ -1,2 +1,24 @@
-export const siteRoutes=['','about','products','oem','manufacturing','quality','contact','insights'];
-
+export const siteRoutes = [
+  "",
+  "about",
+  "products",
+  "oem",
+  "manufacturing",
+  "quality",
+  "contact",
+  "insights",
+  "products/ready-to-eat-chestnuts",
+  "products/organic-chestnut-kernels",
+  "products/sweetened-chestnuts",
+  "products/honey-chestnuts",
+  "products/frozen-chestnuts",
+  "products/fresh-chestnuts",
+  "products/broken-chestnuts",
+  "products/sweet-potato",
+  "products/dried-sweet-potato",
+  "products/roasted-chickpeas",
+  "products/chickpeas",
+  "products/hollow-hawthorn",
+  "products/hawthorn",
+  "products/sweet-potato-chunks",
+];

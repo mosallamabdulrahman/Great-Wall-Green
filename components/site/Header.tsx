@@ -2,6 +2,7 @@ import React from "react";
 import { Search, Globe2, Menu, X, ArrowRight } from "lucide-react";
 import { languages, type Lang } from "../../content";
 import type { SiteCopy } from "./types";
+import { LanguageSelector } from "./LanguageSelector";
 
 interface HeaderProps {
   lang: Lang;
@@ -69,24 +70,7 @@ export function Header({
             <Search size={18} />
           </button>
 
-          <div className="language">
-            <Globe2 size={17} />
-            <select
-              value={lang}
-              onChange={(e) =>
-                window.location.assign(
-                  `/${e.target.value}/${route}${window.location.search}`,
-                )
-              }
-              aria-label={c.custom.split("|")[3]}
-            >
-              {Object.entries(languages).map(([v, l]) => (
-                <option value={v} key={v}>
-                  {l}
-                </option>
-              ))}
-            </select>
-          </div>
+          <LanguageSelector lang={lang} route={route} />
 
           <a className="btn header-cta" href={rfq()}>
             {c.quote}
