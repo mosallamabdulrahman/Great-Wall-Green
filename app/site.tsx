@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { ArrowUp } from "lucide-react";
 import { getCopy, productNames, type Lang } from "../content";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
@@ -23,11 +24,33 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
   const [mobile, setMobile] = useState(false);
   const [dialog, setDialog] = useState("");
   const [search, setSearch] = useState("");
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   }, [lang]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 991) {
+        setMobile(false);
+      }
+    };
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const href = (r = "") => `${base}/${r}`;
   const rfq = (product = "", intent = "", message = "") =>
@@ -161,9 +184,17 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
       <a href="#main" className="skip-link">
         {c.overview}
       </a>
-      <a className="mobile-rfq btn" href={rfq()}>
-        {c.quote}
-      </a>
+
+      {showScrollTop && (
+        <button
+          type="button"
+          className="scroll-to-top-btn"
+          onClick={scrollToTop}
+          aria-label={lang === "ar" ? "الصعود للأعلى" : "Scroll to top"}
+        >
+          <ArrowUp size={20} />
+        </button>
+      )}
 
       <Modals
         dialog={dialog}

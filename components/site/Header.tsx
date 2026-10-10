@@ -37,10 +37,6 @@ export function Header({
 
   return (
     <header className="header">
-      <div className="preview-strip">
-        <span>{c.preview}</span>
-        <span>{c.previewBody}</span>
-      </div>
       <div className="container header-inner">
         <a className="brand" href={href()} aria-label="Great Wall Green Source">
           <img
@@ -101,12 +97,16 @@ export function Header({
             </a>
           ))}
           <button
+            className="mobile-search-btn"
+            type="button"
             onClick={() => {
               setDialog("search");
               setMobile(false);
             }}
+            aria-label={c.search}
           >
-            {c.search}
+            <Search size={18} className="mobile-search-icon" />
+            <span>{c.search}</span>
           </button>
           <a className="btn" href={rfq()}>
             {c.quote}

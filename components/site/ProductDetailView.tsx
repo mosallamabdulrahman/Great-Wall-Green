@@ -1693,38 +1693,106 @@ export function ProductDetailView({
   const renderHighlightIcon = (type: string) => {
     switch (type) {
       case "raw":
-        return <Leaf size={28} />;
+        return (
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* Selected Raw Materials: Nut / Harvest on angled stem */}
+            <path d="M5 20l4-4" />
+            <path d="M10.5 14.5C8 12.5 7 8.5 9.5 5.5s7-1 9.5 1.5 2 7-.5 9.5-6 .5-8-2z" />
+            <path d="M10 10.5c2.5-.5 5.5.5 7 2" />
+          </svg>
+        );
       case "organic":
-        return <ShieldCheck size={28} />;
+        return (
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* Certified Organic: Double leaf sprout & checkmark */}
+            <path d="M12 21a9 9 0 0 0 9-9c0-5-4-8-9-8" />
+            <path d="M3 12c0 5 4 9 9 9" />
+            <path d="M7 13l3.5 3.5L18 8" />
+          </svg>
+        );
       case "pure":
-        return <CheckCircle2 size={28} />;
+        return (
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* No Additives: Square prohibition badge with diagonal slash */}
+            <rect x="3.5" y="3.5" width="17" height="17" rx="4" />
+            <path d="M4.5 4.5l15 15" />
+            <path d="M8.5 15.5c.5-2.5 2.5-4 5-4" />
+          </svg>
+        );
       case "ready":
       default:
-        return <UtensilsCrossed size={28} />;
+        return (
+          <svg
+            width="32"
+            height="32"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* Ready to Eat: Standup snack pouch with food badge */}
+            <rect x="5.5" y="4" width="13" height="16.5" rx="3" />
+            <path d="M9 4v2.5" />
+            <path d="M15 4v2.5" />
+            <circle cx="12" cy="13" r="2.8" />
+            <path d="M12 11.5v3" />
+          </svg>
+        );
     }
   };
 
   return (
     <div className="product-detail-page-wrapper">
-      {/* 1. Breadcrumbs Bar matching Mockup 3 */}
-      <div className="product-detail-breadcrumbs-bar">
-        <div className="container">
-          <nav className="breadcrumbs" aria-label="Breadcrumbs">
-            <a href={href()}>{c.home}</a>
-            <span className="separator">&gt;</span>
-            <a href={href("products")}>{c.products}</a>
-            <span className="separator">&gt;</span>
-            <span className="crumb-category">{product.category[lang]}</span>
-            <span className="separator">&gt;</span>
-            <span className="current">{product.name[lang]}</span>
-          </nav>
+      {/* Top Half Wrapper: Theme Warm Ivory Background */}
+      <div className="product-detail-top-wrapper">
+        {/* 1. Breadcrumbs Bar */}
+        <div className="product-detail-breadcrumbs-bar">
+          <div className="container">
+            <nav className="breadcrumbs" aria-label="Breadcrumbs">
+              <a href={href()}>{c.home}</a>
+              <span className="separator">&gt;</span>
+              <a href={href("products")}>{c.products}</a>
+              <span className="separator">&gt;</span>
+              <span className="crumb-category">{product.category[lang]}</span>
+              <span className="separator">&gt;</span>
+              <span className="current">{product.name[lang]}</span>
+            </nav>
+          </div>
         </div>
-      </div>
 
-      {/* 2. Top Product Showcase Section (2-Col Grid) */}
-      <section className="section product-detail-showcase-section">
-        <div className="container">
-          <div className="product-detail-top-grid">
+        {/* 2. Top Product Showcase Section (2-Col Grid) */}
+        <section className="product-detail-showcase-section">
+          <div className="container">
+            <div className="product-detail-top-grid">
             {/* Left: Gallery (Main Image + 3 Thumbnails) */}
             <div className="product-detail-gallery">
               <div className="product-detail-main-img-card">
@@ -1790,9 +1858,10 @@ export function ProductDetailView({
           </div>
         </div>
       </section>
+    </div>
 
       {/* 3. Bottom 5 Tabs & Ivory Container Card matching Mockup 3 */}
-      <section className="section product-detail-bottom-section">
+      <section className="product-detail-bottom-section">
         <div className="container">
           {/* 5 Tabs Bar */}
           <div className="product-detail-tabs-bar">
