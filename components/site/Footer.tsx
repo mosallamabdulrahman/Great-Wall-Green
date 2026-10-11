@@ -12,13 +12,7 @@ interface FooterProps {
   setDialog: (dialog: string) => void;
 }
 
-export function Footer({
-  c,
-  pn,
-  href,
-  rfq,
-  setDialog,
-}: FooterProps) {
+export function Footer({ c, pn, href, rfq, setDialog }: FooterProps) {
   const navItems = [
     ["", c.home],
     ["about", c.about],
@@ -33,8 +27,11 @@ export function Footer({
       <div className="container">
         <div className="footer-main">
           <div className="footer-brand">
-            <img src="/assets/logo.png" alt="Great Wall Green Source" />
-            <h3>Great Wall Green Source</h3>
+            <img
+              src="/assets/logo/Webp/Greatwall_Lvyuan_Logo_Full_Transparent_Native.webp"
+              alt="Great Wall Green Source"
+              className="footer-logo-img"
+            />
             <p>{c.footerBody}</p>
             <span>{legalName}</span>
           </div>

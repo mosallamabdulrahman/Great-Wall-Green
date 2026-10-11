@@ -1,5 +1,5 @@
-import React from "react";
-import { Search, Globe2, Menu, X, ArrowRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Search, Globe2, Menu, X } from "lucide-react";
 import { languages, type Lang } from "../../content";
 import type { SiteCopy } from "./types";
 import { LanguageSelector } from "./LanguageSelector";
@@ -25,6 +25,17 @@ export function Header({
   setMobile,
   setDialog,
 }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const navItems = [
     ["", c.home],
     ["about", c.about],
@@ -35,7 +46,7 @@ export function Header({
   ];
 
   return (
-    <header className="header">
+    <header className={`header ${isScrolled ? "header-scrolled" : ""}`}>
       <div className="container header-inner">
         <a className="brand" href={href()} aria-label="Great Wall Green Source">
           <img src="/assets/logo.png" alt="Great Wall Green Source" />
@@ -65,8 +76,7 @@ export function Header({
           <LanguageSelector lang={lang} route={route} />
 
           <a className="btn header-cta" href={rfq()}>
-            {c.quote}
-            <ArrowRight size={15} className="btn-arrow-icon" />
+            <span>{c.quote}</span>
           </a>
 
           <button
@@ -105,8 +115,22 @@ export function Header({
             <span>{c.search}</span>
           </button>
           <a className="btn" href={rfq()}>
-            {c.quote}
-            <ArrowRight size={15} className="btn-arrow-icon" />
+            <span>{c.quote}</span>
+            <svg
+              className="btn-arrow-icon"
+              width="15"
+              height="15"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
           </a>
         </nav>
       )}

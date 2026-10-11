@@ -24,7 +24,7 @@
   --section-py: clamp(48px, 6vw, 84px);
   --section-py-sm: clamp(32px, 4vw, 48px);
   --section-py-lg: clamp(64px, 8vw, 96px);
-  --container-max: 1320px;
+  --container-max: min(1320px, 100% - 96px);
   --container-px: clamp(16px, 3.5vw, 48px);
 
   /* Aliases & Legacy Theme Support */
@@ -56,7 +56,7 @@ body {
   font-size: 16px;
   line-height: 1.7;
   background: #fff;
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100%;
   width: 100%;
 }
@@ -156,11 +156,15 @@ svg {
   flex-shrink: 0;
 }
 .container {
-  width: 100%;
-  max-width: var(--container-max);
+  width: min(1320px, 100% - 96px);
   margin-inline: auto;
-  padding-inline: var(--container-px);
   box-sizing: border-box;
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: min(1320px, 100% - 32px);
+  }
 }
 .section {
   padding-block: var(--section-py);
@@ -266,11 +270,20 @@ svg {
 .header {
   position: sticky;
   top: 0;
-  z-index: 30;
-  background: #fff;
+  z-index: 100;
+  background: white;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line);
   width: 100%;
   max-width: 100%;
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.header.header-scrolled {
+  box-shadow: 0 4px 20px -2px rgba(18, 59, 42, 0.08);
+  border-bottom-color: rgba(200, 215, 205, 0.7);
 }
 .header-inner {
   display: flex;
@@ -285,10 +298,11 @@ svg {
   flex-shrink: 0;
 }
 .brand img {
-  width: 119px;
+  width: clamp(155px, 15vw, 195px);
   height: auto;
   object-fit: contain;
   image-rendering: auto;
+  background: transparent;
 }
 .brand > span {
   border-inline-start: 1px solid var(--line);
@@ -374,10 +388,32 @@ summary::-webkit-details-marker {
   gap: 8px;
 }
 .header-cta {
-  min-height: 44px;
-  padding: 10px 16px;
-  font-size: 12px;
+  min-height: 38px !important;
+  height: 38px;
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+  font-weight: 500;
   white-space: nowrap;
+  gap: 6px !important;
+  border-radius: 6px;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.header-cta .btn-arrow-icon {
+  margin-inline-start: 2px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.header-cta:hover .btn-arrow-icon {
+  transform: translateX(3px);
+}
+[dir="rtl"] .header-cta:hover .btn-arrow-icon {
+  transform: scaleX(-1) translateX(3px);
 }
 .language {
   position: relative;
@@ -403,6 +439,17 @@ summary::-webkit-details-marker {
   gap: 8px;
   background: white;
   border-top: 1px solid var(--line);
+}
+.mobile-nav-logo-box {
+  padding-bottom: 14px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.mobile-nav-logo-box img {
+  width: 145px;
+  height: auto;
+  object-fit: contain;
+  display: block;
 }
 .mobile-nav > a:not(.btn) {
   text-align: start;
@@ -1074,12 +1121,16 @@ summary::-webkit-details-marker {
   gap: 48px;
   padding-bottom: 64px;
 }
-.footer-brand > img {
-  width: 132px;
-  background: #fff;
-  padding: 6px;
-  margin-bottom: 24px;
+.footer-brand > img,
+.footer-logo-img {
+  width: 150px;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 20px;
   object-fit: contain;
+  background: transparent;
+  padding: 0;
+  display: block;
 }
 .footer h3 {
   font-family: var(--serif);
@@ -1874,10 +1925,11 @@ summary::-webkit-details-marker {
 }
 .scroll-to-top-btn {
   position: fixed;
-  bottom: 40px;
-  inset-inline-end: 24px;
-  width: 46px;
-  height: 46px;
+  bottom: 24px;
+  left: 24px;
+  right: auto;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: var(--brand-forest);
   color: #ffffff;
@@ -1911,7 +1963,8 @@ summary::-webkit-details-marker {
 .chat-toggle {
   position: fixed;
   bottom: 24px;
-  inset-inline-end: 24px;
+  right: 24px;
+  left: auto;
   width: 56px;
   height: 56px;
   display: flex;
@@ -1923,14 +1976,20 @@ summary::-webkit-details-marker {
   border-radius: 50%;
   z-index: 45;
   box-shadow: 0 4px 24px #123b2a30;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 .chat-toggle:hover {
   background: var(--green);
+  transform: scale(1.05);
 }
 .chat-panel {
   position: fixed;
   bottom: 92px;
-  inset-inline-end: 24px;
+  right: 24px;
+  left: auto;
   width: 360px;
   max-height: min(680px, calc(100dvh - 160px));
   border: 1px solid var(--line);
@@ -1941,6 +2000,18 @@ summary::-webkit-details-marker {
   box-shadow: 0 16px 50px #123b2a24;
   display: flex;
   flex-direction: column;
+  animation: chatPanelSlideIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes chatPanelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 .chat-header {
   display: flex;
@@ -2176,11 +2247,14 @@ dialog::backdrop {
   .header-inner {
     min-height: 80px;
   }
+  .header-cta {
+    display: none !important;
+  }
   .brand > span {
     display: block;
   }
   .header-cta {
-    min-height: 48px;
+    min-height: 38px;
     font-size: 13px;
   }
   .hero-grid {
@@ -3171,7 +3245,7 @@ dialog::backdrop {
   min-height: 84px;
 }
 .brand img {
-  width: 192px;
+  width: 205px;
 }
 .desktop-nav {
   gap: 24px;
@@ -3186,8 +3260,8 @@ dialog::backdrop {
 }
 .header-cta {
   font-size: 13px;
-  padding-inline: 20px;
-  border-radius: 5px;
+  padding-inline: 14px;
+  border-radius: 6px;
 }
 .desktop-search {
   display: flex;
@@ -8070,7 +8144,7 @@ dialog::backdrop {
   position: absolute;
   top: calc(100% + 5px);
   inset-inline-end: 0;
-  min-width: 138px;
+  min-width: 100%;
   background: #ffffff;
   border: 1.5px solid var(--border-ivory);
   border-radius: 8px;

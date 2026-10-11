@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import { ArrowUp } from "lucide-react";
-import { getCopy, productNames, type Lang } from "../content";
+import { ArrowUp, MessageSquare, Send, Package, Factory, ShieldCheck, X } from "lucide-react";
+import { getCopy, productNames, productIds, type Lang } from "../content";
 import { Header } from "../components/site/Header";
 import { Footer } from "../components/site/Footer";
 import { HomeView } from "../components/site/HomeView";
@@ -25,6 +25,12 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
   const [dialog, setDialog] = useState("");
   const [search, setSearch] = useState("");
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [chat, setChat] = useState(false);
+  const [chatInput, setChatInput] = useState("");
+  const [chatCountry, setChatCountry] = useState("");
+  const [chatProduct, setChatProduct] = useState("");
+  const [chatRequirement, setChatRequirement] = useState("");
+  const [messages, setMessages] = useState<{ text: string; user?: boolean }[]>([]);
 
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -55,7 +61,36 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
   const href = (r = "") => `${base}/${r}`;
   const rfq = (product = "", intent = "", message = "") =>
     href("contact") +
-    `?product=${encodeURIComponent(product)}&intent=${encodeURIComponent(intent)}&message=${encodeURIComponent(message)}#request`;
+    `?product=${encodeURIComponent(product)}&intent=${encodeURIComponent(intent)}&message=${encodeURIComponent(message)}&country=${encodeURIComponent(chatCountry)}#request`;
+
+  function chatAction(action: string) {
+    let text = c.confirmTeam;
+    if (action === "product") text = c.chatProduct;
+    if (action === "oem") text = c.chatOem;
+    if (action === "cert") text = c.chatCert;
+    setMessages((m) => [...m, { text }]);
+  }
+
+  function sendChat(e: React.FormEvent) {
+    e.preventDefault();
+    if (!chatInput.trim()) return;
+    const text = chatInput.trim();
+    let matched = pn.findIndex((n) =>
+      n.toLowerCase().includes(text.toLowerCase())
+    );
+    if (matched < 0)
+      matched = productNames.en.findIndex((n) =>
+        text.toLowerCase().includes(n.toLowerCase())
+      );
+    if (matched >= 0) setChatProduct(productIds[matched]);
+    setChatRequirement((v) => [v, text].filter(Boolean).join("\n"));
+    setMessages((m) => [
+      ...m,
+      { text, user: true },
+      { text: c.confirmTeam + " " + c.chatBrief },
+    ]);
+    setChatInput("");
+  }
 
   let mainContent;
   if (!route) {
@@ -166,6 +201,93 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
       >
         <ArrowUp size={20} />
       </button>
+
+      <button
+        className={`chat-toggle ${chat ? "is-open" : ""}`}
+        onClick={() => setChat(!chat)}
+        aria-label={c.assistant}
+        aria-expanded={chat}
+      >
+        {chat ? <X size={22} /> : <MessageSquare size={24} />}
+      </button>
+
+      {chat && (
+        <aside className="chat-panel" aria-label={c.assistant}>
+          <div className="chat-header">
+            <div>
+              <strong>Great Wall Green Source</strong>
+              <small>{c.assistant}</small>
+            </div>
+            <button
+              className="icon-btn"
+              onClick={() => setChat(false)}
+              aria-label={c.close}
+            >
+              <X size={18} />
+            </button>
+          </div>
+          <div className="chat-content">
+            <p className="chat-bubble">{c.assistantHello}</p>
+            <div className="chat-actions">
+              <button onClick={() => chatAction("product")}>
+                <Package size={16} />
+                {c.findProduct}
+              </button>
+              <button onClick={() => chatAction("oem")}>
+                <Factory size={16} />
+                {c.oem}
+              </button>
+              <button onClick={() => chatAction("cert")}>
+                <ShieldCheck size={16} />
+                {c.certificateLibrary}
+              </button>
+            </div>
+            <div className="chat-messages" aria-live="polite">
+              {messages.map((m, i) => (
+                <p className={`chat-bubble ${m.user ? "user" : ""}`} key={i}>
+                  {m.text}
+                </p>
+              ))}
+            </div>
+            <label>
+              {c.products}
+              <select
+                value={chatProduct}
+                onChange={(e) => setChatProduct(e.target.value)}
+              >
+                <option value="">{c.productQuestion}</option>
+                {productIds.map((id, i) => (
+                  <option key={id} value={id}>
+                    {pn[i]}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              {c.chatCountry}
+              <input
+                value={chatCountry}
+                onChange={(e) => setChatCountry(e.target.value)}
+              />
+            </label>
+            <a className="btn" href={rfq(chatProduct, "", chatRequirement)}>
+              {c.quote}
+            </a>
+            <small>{c.savedBrief}</small>
+          </div>
+          <form className="chat-compose" onSubmit={sendChat}>
+            <input
+              value={chatInput}
+              onChange={(e) => setChatInput(e.target.value)}
+              placeholder={c.chatPlaceholder}
+              aria-label={c.message}
+            />
+            <button className="icon-btn" aria-label={c.send}>
+              <Send size={18} />
+            </button>
+          </form>
+        </aside>
+      )}
 
       <Modals
         dialog={dialog}
