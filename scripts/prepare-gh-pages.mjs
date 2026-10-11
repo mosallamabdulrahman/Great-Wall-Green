@@ -41,7 +41,7 @@ function createDirectoryIndexFiles(dir) {
 createDirectoryIndexFiles(DIST_DIR);
 console.log(`Generated ${generatedDirsCount} directory index.html entrypoints for clean URLs.`);
 
-// 3. Ensure root index.html exists
+// 3. Create root index.html to redirect root repository visits to /${REPO_NAME}/en/
 const rootIndexPath = path.join(DIST_DIR, "index.html");
 const indexHtmlContent = `<!DOCTYPE html>
 <html lang="en">
@@ -64,16 +64,38 @@ const indexHtmlContent = `<!DOCTYPE html>
 </body>
 </html>
 `;
+fs.writeFileSync(rootIndexPath, indexHtmlContent, "utf-8");
+console.log("Created root index.html");
 
-if (!fs.existsSync(rootIndexPath)) {
-  fs.writeFileSync(rootIndexPath, indexHtmlContent, "utf-8");
-  console.log("Created root index.html");
-}
-
-// 4. Create 404.html as a fallback in the output build directory (exact copy of index.html)
-// GitHub Pages serves 404.html when a URL is not matched, allowing client-side routing to take over
-fs.copyFileSync(rootIndexPath, path.join(DIST_DIR, "404.html"));
-console.log("Created 404.html (exact copy of index.html for GitHub Pages fallback)");
+// 4. Create 404.html in the output build directory
+// When GitHub Pages serves 404 on any URL, this script redirects to the matching directory with trailing slash
+const spa404Content = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+    var path = window.location.pathname;
+    var base = '/${REPO_NAME}/';
+    if (!path.startsWith(base)) {
+      window.location.replace(base + 'en/');
+    } else {
+      var sub = path.slice(base.length);
+      if (sub && !sub.endsWith('/')) {
+        window.location.replace(base + sub + '/' + window.location.search + window.location.hash);
+      } else {
+        window.location.replace(base + 'en/' + window.location.search + window.location.hash);
+      }
+    }
+  </script>
+  <title>Great Wall Green Source</title>
+</head>
+<body>
+  <p>Loading Great Wall Green Source...</p>
+</body>
+</html>
+`;
+fs.writeFileSync(path.join(DIST_DIR, "404.html"), spa404Content, "utf-8");
+console.log("Created 404.html for GitHub Pages fallback");
 
 // 5. Rewrite asset URLs and internal links inside dist/client with /${REPO_NAME} prefix
 const prefix = `/${REPO_NAME}`;

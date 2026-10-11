@@ -26,7 +26,13 @@ export function LanguageSelector({ lang, route }: LanguageSelectorProps) {
 
   const handleSelect = (newLang: string) => {
     setOpen(false);
-    window.location.assign(`/${newLang}/${route}${window.location.search}`);
+    const prefix =
+      typeof window !== "undefined" &&
+      window.location.pathname.startsWith("/Great-Wall-Green")
+        ? "/Great-Wall-Green"
+        : "";
+    const cleanRoute = route ? `/${route}` : "";
+    window.location.assign(`${prefix}/${newLang}${cleanRoute}${window.location.search}`);
   };
 
   return (

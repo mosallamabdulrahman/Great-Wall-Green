@@ -18,7 +18,12 @@ import { Modals } from "../components/site/Modals";
 export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
   const c = getCopy(lang);
   const pn = productNames[lang];
-  const base = `/${lang}`;
+  const repoPrefix =
+    typeof window !== "undefined" &&
+    window.location.pathname.startsWith("/Great-Wall-Green")
+      ? "/Great-Wall-Green"
+      : "";
+  const base = `${repoPrefix}/${lang}`;
   const route = path.join("/");
 
   const [mobile, setMobile] = useState(false);
@@ -58,7 +63,7 @@ export default function Site({ lang, path }: { lang: Lang; path: string[] }) {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const href = (r = "") => `${base}/${r}`;
+  const href = (r = "") => (r ? `${base}/${r}` : `${base}/`);
   const rfq = (product = "", intent = "", message = "") =>
     href("contact") +
     `?product=${encodeURIComponent(product)}&intent=${encodeURIComponent(intent)}&message=${encodeURIComponent(message)}&country=${encodeURIComponent(chatCountry)}#request`;
