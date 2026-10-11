@@ -2,19 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=/Great-Wall-Green/en/">
   <script>
     var path = window.location.pathname;
     var base = '/Great-Wall-Green/';
     if (!path.startsWith(base)) {
       window.location.replace(base + 'en/');
-    } else if (path === base || path === base.slice(0, -1)) {
-      window.location.replace(base + 'en/');
+    } else {
+      var sub = path.slice(base.length);
+      if (sub && !sub.endsWith('/')) {
+        window.location.replace(base + sub + '/' + window.location.search + window.location.hash);
+      } else {
+        window.location.replace(base + 'en/' + window.location.search + window.location.hash);
+      }
     }
   </script>
   <title>Great Wall Green Source</title>
 </head>
 <body>
-  <p>Redirecting to <a href="/Great-Wall-Green/en/">English version</a>...</p>
+  <p>Loading Great Wall Green Source...</p>
 </body>
 </html>
