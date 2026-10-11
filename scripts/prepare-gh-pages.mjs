@@ -9,67 +9,76 @@ if (!fs.existsSync(DIST_DIR)) {
   process.exit(1);
 }
 
-// 1. Create .nojekyll
+// 1. Create .nojekyll to prevent GitHub Pages from ignoring files starting with underscores (like _next)
 fs.writeFileSync(path.join(DIST_DIR, ".nojekyll"), "", "utf-8");
 console.log("Created .nojekyll");
 
-// 2. Create index.html redirecting to /Great-Wall-Green/en/
-const indexHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=./en/">
-  <script>
-    var path = window.location.pathname;
-    if (!path.endsWith('/')) path += '/';
-    window.location.replace(path + 'en/');
-  </script>
-  <title>Great Wall Green Source</title>
-</head>
-<body>
-  <p>Redirecting to <a href="./en/">English version</a>...</p>
-</body>
-</html>
-`;
-fs.writeFileSync(path.join(DIST_DIR, "index.html"), indexHtml, "utf-8");
-console.log("Created index.html");
+// 2. Generate physical directory entrypoints (folder/index.html) for all exported .html pages
+// This completely fixes GitHub Pages 404 errors on direct access and page refresh without hash routing (#)
+let generatedDirsCount = 0;
 
-// 3. Create 404.html redirecting SPA router
-const spa404 = `<!DOCTYPE html>
+function createDirectoryIndexFiles(dir) {
+  const entries = fs.readdirSync(dir);
+  for (const entry of entries) {
+    const fullPath = path.join(dir, entry);
+    const stat = fs.statSync(fullPath);
+    if (stat.isDirectory()) {
+      createDirectoryIndexFiles(fullPath);
+    } else if (entry.endsWith(".html") && entry !== "index.html" && entry !== "404.html") {
+      const pageName = entry.slice(0, -5);
+      const targetDir = path.join(dir, pageName);
+      const targetFile = path.join(targetDir, "index.html");
+
+      if (!fs.existsSync(targetDir)) {
+        fs.mkdirSync(targetDir, { recursive: true });
+      }
+      fs.copyFileSync(fullPath, targetFile);
+      generatedDirsCount++;
+    }
+  }
+}
+
+createDirectoryIndexFiles(DIST_DIR);
+console.log(`Generated ${generatedDirsCount} directory index.html entrypoints for clean URLs.`);
+
+// 3. Ensure root index.html exists
+const rootIndexPath = path.join(DIST_DIR, "index.html");
+const indexHtmlContent = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="refresh" content="0; url=/${REPO_NAME}/en/">
   <script>
     var path = window.location.pathname;
     var base = '/${REPO_NAME}/';
     if (!path.startsWith(base)) {
       window.location.replace(base + 'en/');
-    } else {
-      var segs = path.slice(base.length).split('/');
-      var lang = segs[0] || 'en';
-      var rest = segs.slice(1).join('/');
-      if (rest) {
-        window.location.replace(base + lang + '/' + rest + '.html' + window.location.search);
-      } else {
-        window.location.replace(base + lang + '.html' + window.location.search);
-      }
+    } else if (path === base || path === base.slice(0, -1)) {
+      window.location.replace(base + 'en/');
     }
   </script>
   <title>Great Wall Green Source</title>
 </head>
 <body>
-  <p>Redirecting...</p>
+  <p>Redirecting to <a href="/${REPO_NAME}/en/">English version</a>...</p>
 </body>
 </html>
 `;
-fs.writeFileSync(path.join(DIST_DIR, "404.html"), spa404, "utf-8");
-console.log("Created 404.html");
 
-// 4. Rewrite URLs in files inside dist/client
+if (!fs.existsSync(rootIndexPath)) {
+  fs.writeFileSync(rootIndexPath, indexHtmlContent, "utf-8");
+  console.log("Created root index.html");
+}
+
+// 4. Create 404.html as a fallback in the output build directory (exact copy of index.html)
+// GitHub Pages serves 404.html when a URL is not matched, allowing client-side routing to take over
+fs.copyFileSync(rootIndexPath, path.join(DIST_DIR, "404.html"));
+console.log("Created 404.html (exact copy of index.html for GitHub Pages fallback)");
+
+// 5. Rewrite asset URLs and internal links inside dist/client with /${REPO_NAME} prefix
 const prefix = `/${REPO_NAME}`;
 const extensions = [".html", ".js", ".json", ".rsc", ".css"];
-
-let count = 0;
+let patchedCount = 0;
 
 function walkDir(dir) {
   const files = fs.readdirSync(dir);
@@ -78,7 +87,7 @@ function walkDir(dir) {
     const stat = fs.statSync(fullPath);
     if (stat.isDirectory()) {
       walkDir(fullPath);
-    } else if (extensions.some(ext => file.endsWith(ext))) {
+    } else if (extensions.some((ext) => file.endsWith(ext))) {
       let content = fs.readFileSync(fullPath, "utf-8");
       let modified = false;
 
@@ -96,7 +105,7 @@ function walkDir(dir) {
 
       // Replace /favicon.svg if not already prefixed
       if (content.includes("/favicon.svg") && !content.includes(`${prefix}/favicon.svg`)) {
-        content = content.replaceAll("/favicon.svg", `${prefix}/favicon.svg/`);
+        content = content.replaceAll("/favicon.svg", `${prefix}/favicon.svg`);
         modified = true;
       }
 
@@ -131,11 +140,11 @@ function walkDir(dir) {
 
       if (modified) {
         fs.writeFileSync(fullPath, content, "utf-8");
-        count++;
+        patchedCount++;
       }
     }
   }
 }
 
 walkDir(DIST_DIR);
-console.log(`Patched ${count} files with /${REPO_NAME} prefix.`);
+console.log(`Patched ${patchedCount} files with /${REPO_NAME} prefix.`);
