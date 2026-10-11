@@ -26,23 +26,19 @@ export function Header({
   setDialog,
 }: HeaderProps) {
   const navItems = [
+    ["", c.home],
+    ["about", c.about],
     ["products", c.products],
     ["oem", c.oem],
-    ["manufacturing", c.manufacturing],
-    ["quality", c.quality],
-    ["about", c.about],
-    ["insights", c.insights],
     ["contact", lang === "en" ? "Contact us" : c.contact],
+    ["insights", c.insights],
   ];
 
   return (
     <header className="header">
       <div className="container header-inner">
         <a className="brand" href={href()} aria-label="Great Wall Green Source">
-          <img
-            src="/assets/logo.png"
-            alt="Great Wall Green Source"
-          />
+          <img src="/assets/logo.png" alt="Great Wall Green Source" />
         </a>
 
         <nav className="desktop-nav" aria-label={c.menu}>
